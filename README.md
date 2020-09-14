@@ -13,7 +13,7 @@ Hi,
 ### 挑戰一: Django 熟悉度 (folder: x_1)
 > 請用 Django 實作以下功能
 ```
-爬取 momo購物網(https://www.momoshop.com.tw/main/Main.jsp) 中與活動有關的資訊，並將爬回來的資料呈現出來
+爬取 momo購物網(https://www.momoshop.com.tw/main/Main.jsp) 中與促銷活動、特價活動有關的資訊，並將爬回來的資料呈現出來
 
 加分項目：
 - 有排程功能
