@@ -1,0 +1,172 @@
+{% extends 'app/base.html' %}
+{% block content %}
+
+<h1>首頁: {{ template_name }}</h1>
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<div id="scatter_area"></div>
+
+<!-- <script src="/main.js"></script> -->
+<script>
+    // var data = [
+    //     { prdname: 77, bb: 20, 'href': '1href','discount':64 },
+    //     { prdname: 40, bb: 90, 'href': '2href','discount':64 },
+    //     { prdname: 80, bb: 50, 'href': '3123','discount':64 },
+    // ]
+    {% autoescape off %}
+    var data = {{ ltsale }};
+    {% endautoescape %}
+
+    var Ymin =d3.max(data, d => d.g_discount);
+    var Ymax =d3.min(data, d => d.g_discount);
+
+    var Xmax =d3.max(data, d => d.g_price);
+    var Xmin =d3.min(data, d => d.g_price);
+
+    var margin = { top: 10, right: 40, bottom: 30, left: 30 };
+    var height = 1000;
+    var width = 1200;
+
+    // 取 X 軸比例尺
+    var scaleX = d3.scaleLinear()
+        .domain([Xmin, Xmax])
+        // .range([margin.left, width - margin.right]);
+        .range([0, width-margin.right]);
+
+
+
+    // 取 Y 軸比例尺
+    var scaleY = d3.scaleLinear()
+        .domain([Ymin,Ymax])
+        .range([0+margin.top, width-margin.bottom]);
+
+
+    var svg01 = d3.select("#scatter_area")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", [0, 0, width, height]);
+
+
+    svg01
+        .append('g')
+        .attr("transform", `translate(${margin.left},${height - margin.bottom})`)
+        .call(d3.axisBottom(scaleX)) //==.ticks(width / 80))
+        // .call(g => g.append("text")
+        //     .attr("x", width)
+        //     .attr("y", margin.bottom - 4)
+        //     .attr("fill", "currentColor")
+        //     .attr("text-anchor", "end")
+        //     .text('價錢'))
+
+
+    svg01
+        .append('g')
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(scaleY))
+        .call(g => g.append("text")
+            .attr("x", margin.left)
+            .attr("y", 10)
+            .attr("fill", "currentColor")
+            .attr("text-anchor", "start")
+            .text('折扣比例'))
+
+
+    svg01.append("g")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5)
+        .attr("fill", "none")
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", d => scaleX(d.g_price))
+        .attr("cy", d => scaleY(d.g_discount))
+        .attr("r", 3)
+
+    svg01.append("g")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 10)
+        .selectAll("text")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("dy", "0.35em")
+        .attr("x", d => scaleX(d.g_price) + 7)
+        .attr("y", d => scaleY(d.g_discount))
+        .append('a')
+        
+        
+        .attr('href', d => d.href)
+        .text(d => d.prdname)
+        ;
+</script>
+
+
+{% if bank_card %}
+<table style="border:3px #cccccc solid;" cellpadding="10" border='1'>
+
+    <tr>
+        <td> 銀行 </td>
+        <td> 活動時間 </td>
+        <td> 優惠規則 </td>
+        <td> 優惠金額 </td>
+    </tr>
+
+    {% for bank in bank_card %}
+    {% for k,v in bank.items %}
+    {% for d in v %}
+    <tr>
+        <td>{{ k }}</td>
+        {% for d3 in d %}
+        <td> {{ d3 }} </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+</table>
+{% endif %}
+
+
+
+<BR>
+
+
+{% if ltsale %}
+<table style="border:3px #cccccc solid;" cellpadding="10" border='1'>
+    <tr>
+        <td> 折扣(低至高) </td>
+        <td> 品名 </td>
+        <td> 金額 </td>
+
+        <td> g_price </td>
+        <td> g_discount </td>
+
+    </tr>
+
+    {% for item in ltsale %}
+    <tr>
+        <td> {{ item.discount }} </td>
+        <td> <a href="{{ href }}"> {{ item.prdname }} </a> </td>
+        <td> {{ item.prdprice }} </td>
+
+        <td> {{ item.g_price }} </td>
+        <td> {{ item.g_discount }} </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+{% endif %}
+
+
+<BR>
+
+
+{% endblock  %}
+
+
+

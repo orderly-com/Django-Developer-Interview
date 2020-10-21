@@ -1,0 +1,8 @@
+# git rm -r --cached . && git add . && git commit -m "Remove all files that are in the .gitignore" && git push
+.vscode/
+
+
+Pipfile.lock
+debug.log
+cache_bank.html
+cache_limited_sale.html
