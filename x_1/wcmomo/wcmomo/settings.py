@@ -49,7 +49,6 @@ INSTALLED_APPS = [
 # Micahel
 INSTALLED_APPS += [
     'app.apps.AppConfig',
-    'django_q',
     'django_apscheduler',
 ]
 

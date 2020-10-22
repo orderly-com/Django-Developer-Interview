@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 def my_job():
     #  Your job processing logic here...
     pass
+    print('JOB_METH01')
 
 
 def delete_old_job_executions(max_age=604_800):

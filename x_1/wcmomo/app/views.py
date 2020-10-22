@@ -26,10 +26,10 @@ register_events(scheduler)
 scheduler.start()
 
 
-@register_job(scheduler, "cron", second='*/1', args=['test'])
-def test(s):
-    print(s*3)
-    pass
+@register_job(scheduler, "cron", second='*/5', args=['test'])
+def wc_job(s):
+    print('JOB_METH02')
+    
 
 
 async def wc(url, fn):
