@@ -14,26 +14,26 @@
     var data = {{ ltsale }};
     {% endautoescape %}
 
-    var Ymin =d3.max(data, d => d.g_discount);
-    var Ymax =d3.min(data, d => d.g_discount);
+    var Ymax = d3.max(data, d => d.g_discount);
+    var Ymin = d3.min(data, d => d.g_discount);
 
-    var Xmax =d3.max(data, d => d.g_price);
-    var Xmin =d3.min(data, d => d.g_price);
+    var Xmax = d3.max(data, d => d.g_price);
+    var Xmin = d3.min(data, d => d.g_price);
 
     var margin = { top: 10, right: 40, bottom: 30, left: 30 };
-    var height = 1000;
+    var height = 1600;
     var width = 1200;
 
 
     var scaleX = d3.scaleLinear()
-        .domain([Xmin, Xmax])
+        .domain([0, Xmax])
         // .range([margin.left, width - margin.right]);
-        .range([0, width-margin.right]);
+        .range([0 + margin.left, width - margin.right]);
 
 
     var scaleY = d3.scaleLinear()
-        .domain([Ymin,Ymax])
-        .range([0+margin.top, width-margin.bottom]);
+        .domain([Ymax, Ymin])
+        .range([0 + margin.top, height - margin.bottom]);
 
 
     var svg01 = d3.select("#scatter_area")
@@ -45,26 +45,26 @@
 
     svg01
         .append('g')
-        .attr("transform", `translate(${margin.left},${height - margin.bottom})`)
-        .call(d3.axisBottom(scaleX)) //==.ticks(width / 80))
-        // .call(g => g.append("text")
-        //     .attr("x", width)
-        //     .attr("y", margin.bottom - 4)
-        //     .attr("fill", "currentColor")
-        //     .attr("text-anchor", "end")
-        //     .text('價錢'))
+        .attr("transform", `translate(${margin.left},${margin.top})`)
+        .call(d3.axisLeft(scaleY))
+        .call(g => g.append("text")
+            .attr("x", -margin.left)
+            .attr("y", 0)
+            .attr("fill", "currentColor")
+            .attr("text-anchor", "start")
+            .text('折扣比例'))
 
 
     svg01
         .append('g')
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(scaleY))
+        .attr("transform", `translate(${0},${height - margin.bottom + margin.top})`)
+        .call(d3.axisBottom(scaleX)) //==.ticks(width / 80))
         .call(g => g.append("text")
-            .attr("x", margin.left)
-            .attr("y", 10)
+            .attr("x", width)
+            .attr("y", margin.bottom - margin.top)
             .attr("fill", "currentColor")
-            .attr("text-anchor", "start")
-            .text('折扣比例'))
+            .attr("text-anchor", "end")
+            .text('價錢'))
 
 
     svg01.append("g")
@@ -87,14 +87,13 @@
         .enter()
         .append("text")
         .attr("dy", "0.35em")
-        .attr("x", d => scaleX(d.g_price) + 7)
+        .attr("x", d => scaleX(d.g_price) + 5)
         .attr("y", d => scaleY(d.g_discount))
         .append('a')
-        
-        
         .attr('href', d => d.href)
-        .text(d => d.prdname)
-        ;
+        .text(d => d.prdname);
+
+
 </script>
 
 
@@ -135,8 +134,7 @@
         <td> 品名 </td>
         <td> 金額 </td>
 
-        <td> g_price </td>
-        <td> g_discount </td>
+
 
     </tr>
 
@@ -146,8 +144,7 @@
         <td> <a href="{{ href }}"> {{ item.prdname }} </a> </td>
         <td> {{ item.prdprice }} </td>
 
-        <td> {{ item.g_price }} </td>
-        <td> {{ item.g_discount }} </td>
+
 
     </tr>
     {% endfor %}
@@ -161,5 +158,8 @@
 
 {% endblock  %}
 
+<!-- <td> g_price </td>
+<td> g_discount </td>
 
-
+<td> {{ item.g_price }} </td>
+<td> {{ item.g_discount }} </td> -->

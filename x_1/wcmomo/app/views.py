@@ -15,6 +15,9 @@ from time import sleep
 import asyncio
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
+from asgiref.sync import async_to_sync, sync_to_async
+import datetime
+
 
 scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), 'default')
@@ -26,37 +29,44 @@ register_events(scheduler)
 scheduler.start()
 
 
-@register_job(scheduler, "cron", second='*/5', args=['test'])
+# @register_job(scheduler, "cron", minute='*/5', args=['test'])
 def wc_job(s):
     print('JOB_METH02')
-    
+    with open('job2.log', 'a', errors='ignore', encoding='utf-8') as f:
+        f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")+'\n')
+
+    urls = ['https://www.momoshop.com.tw/edm/cmmedm.jsp?lpn=O0Y2mh4ttZH&n=1&art_page=9',
+            'https://www.momoshop.com.tw/main/Main.jsp']
+    fns = ['cache_bank.html', 'cache_limited_sale.html']
+
+    asyncio.set_event_loop(asyncio.new_event_loop())
+    loop = asyncio.get_event_loop()
+    tasks = wc(urls[0], fns[0]), wc(urls[1], fns[1])
+    bank_card, ltsale = loop.run_until_complete(asyncio.gather(*tasks))
+    loop.close()
 
 
 async def wc(url, fn):
-    if os.path.isfile(fn):
-        with open(fn, 'r', errors='ignore', encoding='utf-8') as f:
-            tmp = f.read()
-    else:
-        # if os.name == 'nt':
-        Chrome_driver_path = r'chromedriver_86.0.4240.22_win32.exe'  # TODO
+    # if os.name == 'nt':
+    Chrome_driver_path = r'chromedriver_86.0.4240.22_win32.exe'  # TODO
 
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("headless")
-        chrome_options.add_argument(
-            'User-Agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"')
-        browser = webdriver.Chrome(
-            executable_path=Chrome_driver_path, chrome_options=chrome_options)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("headless")
+    chrome_options.add_argument(
+        'User-Agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"')
+    browser = webdriver.Chrome(
+        executable_path=Chrome_driver_path, chrome_options=chrome_options)
 
-        browser.get(url)
-        js = "var action=document.documentElement.scrollTop=10000"
-        browser.execute_script(js)
-        await asyncio.sleep(20)
-        tmp = browser.page_source
-        browser.close()  # close tab not quit
-        print(len(tmp), url)
+    browser.get(url)
+    js = "var action=document.documentElement.scrollTop=10000"
+    browser.execute_script(js)
+    await asyncio.sleep(40)
+    tmp = browser.page_source
+    browser.close()  # close tab not quit
+    print(len(tmp), url)
 
-        with open(fn, 'w', errors='ignore', encoding='utf-8') as f:
-            f.write(tmp)
+    with open(fn, 'w', errors='ignore', encoding='utf-8') as f:
+        f.write(tmp)
 
     return tmp
 
@@ -65,7 +75,11 @@ async def bank():
     url = 'https://www.momoshop.com.tw/edm/cmmedm.jsp?lpn=O0Y2mh4ttZH&n=1&art_page=9'
     fn = 'cache_bank.html'
 
-    tmp = await wc(url, fn)
+    if os.path.isfile(fn):
+        with open(fn, 'r', errors='ignore', encoding='utf-8') as f:
+            tmp = f.read()
+    else:
+        tmp = await wc(url, fn)
 
     tmp = BeautifulSoup(tmp, "html.parser")  # lxml
     bank = tmp.find('div', id='Area_bankList',
@@ -82,7 +96,11 @@ async def limited_time_sale():
     url = 'https://www.momoshop.com.tw/main/Main.jsp'
     fn = 'cache_limited_sale.html'
 
-    tmp = await wc(url, fn)
+    if os.path.isfile(fn):
+        with open(fn, 'r', errors='ignore', encoding='utf-8') as f:
+            tmp = f.read()
+    else:
+        tmp = await wc(url, fn)
 
     tmp = BeautifulSoup(tmp, "html.parser")  # lxml
 
@@ -113,7 +131,6 @@ async def limited_time_sale():
 
 
 def home(request):
-
     template_name = 'app/home.html'
 
     # for "now" event

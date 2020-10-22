@@ -14,6 +14,7 @@ autopep8 = "*"
 django-crontab = "*"
 django-apscheduler = "*"
 apscheduler = "*"
+asgiref = "*"
 
 [requires]
 python_version = "3.7"

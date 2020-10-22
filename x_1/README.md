@@ -1,5 +1,5 @@
-# SOLVED: django.db.utils.OperationalError: no such table: django_apscheduler_djangojob
-please comment out wcmomo\app\views.py:29
+# SOLVED: django.db.utils.OperationalError: no such table: django_apscheduler_djangojob or longtime: Performing system checks...
+please comment out wcmomo\app\views.py: @register_job(...)
 after exec: 2w_mig.bat and 3w_run.bat
 comment it in
 
