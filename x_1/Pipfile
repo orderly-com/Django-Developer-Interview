@@ -11,6 +11,9 @@ beautifulsoup4 = "*"
 selenium = "*"
 lxml = "*"
 autopep8 = "*"
+django-crontab = "*"
+django-apscheduler = "*"
+apscheduler = "*"
 
 [requires]
 python_version = "3.7"

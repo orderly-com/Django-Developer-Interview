@@ -50,24 +50,13 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     'app.apps.AppConfig',
     'django_q',
+    'django_apscheduler',
 ]
 
 # Micahel
-Q_CLUSTER = {
-    'name': 'myproject',
-    'workers': 8,
-    'recycle': 500,
-    'timeout': 60,
-    'compress': True,
-    'cpu_affinity': 1,
-    'save_limit': 250,
-    'queue_limit': 500,
-    'label': 'Django Q',
-    # 'redis': {
-    #     'host': '127.0.0.1',
-    #     'port': 6379,
-    #     'db': 0, }
-}
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

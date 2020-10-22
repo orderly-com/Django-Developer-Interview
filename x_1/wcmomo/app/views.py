@@ -13,9 +13,23 @@ from selenium import webdriver
 from pathlib import Path
 from time import sleep
 import asyncio
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
+
+scheduler = BackgroundScheduler()
+scheduler.add_jobstore(DjangoJobStore(), 'default')
 
 
 Path(__file__).resolve().parent.parent
+
+register_events(scheduler)
+scheduler.start()
+
+
+@register_job(scheduler, "cron", second='*/1', args=['test'])
+def test(s):
+    print(s*3)
+    pass
 
 
 async def wc(url, fn):
@@ -109,6 +123,5 @@ def home(request):
     tasks = bank(), limited_time_sale()
     bank_card, ltsale = loop.run_until_complete(asyncio.gather(*tasks))
     loop.close()
-
 
     return render(request, template_name, locals())

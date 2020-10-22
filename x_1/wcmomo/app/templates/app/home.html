@@ -8,13 +8,8 @@
 
 <div id="scatter_area"></div>
 
-<!-- <script src="/main.js"></script> -->
+
 <script>
-    // var data = [
-    //     { prdname: 77, bb: 20, 'href': '1href','discount':64 },
-    //     { prdname: 40, bb: 90, 'href': '2href','discount':64 },
-    //     { prdname: 80, bb: 50, 'href': '3123','discount':64 },
-    // ]
     {% autoescape off %}
     var data = {{ ltsale }};
     {% endautoescape %}
@@ -29,15 +24,13 @@
     var height = 1000;
     var width = 1200;
 
-    // 取 X 軸比例尺
+
     var scaleX = d3.scaleLinear()
         .domain([Xmin, Xmax])
         // .range([margin.left, width - margin.right]);
         .range([0, width-margin.right]);
 
 
-
-    // 取 Y 軸比例尺
     var scaleY = d3.scaleLinear()
         .domain([Ymin,Ymax])
         .range([0+margin.top, width-margin.bottom]);
