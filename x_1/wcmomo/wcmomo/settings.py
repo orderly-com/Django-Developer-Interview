@@ -31,9 +31,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Michael
-ALLOWED_HOSTS += [
-    '*',
-]
+# ALLOWED_HOSTS += [
+#     '*',
+# ]
 
 # Application definition
 

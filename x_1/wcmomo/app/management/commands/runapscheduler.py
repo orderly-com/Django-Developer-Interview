@@ -33,7 +33,7 @@ class Command(BaseCommand):
         scheduler.add_job(
             my_job,
             trigger=CronTrigger(minute="*/3"),  # Every 3 seconds
-            id="my_job",  # The `id` assigned to each job MUST be unique
+            #id="my_job",  # The `id` assigned to each job MUST be unique
             max_instances=1,
             replace_existing=True,
         )
@@ -44,7 +44,7 @@ class Command(BaseCommand):
             trigger=CronTrigger(
                 day_of_week="mon", hour="00", minute="00"
             ),  # Midnight on Monday, before start of the next work week.
-            id="delete_old_job_executions",
+            #id="delete_old_job_executions",
             max_instances=1,
             replace_existing=True,
         )

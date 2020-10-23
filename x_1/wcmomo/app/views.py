@@ -29,7 +29,7 @@ register_events(scheduler)
 scheduler.start()
 
 
-# @register_job(scheduler, "cron", minute='*/5', args=['test'])
+@register_job(scheduler, "cron", minute='*/5', args=['test'])
 def wc_job(s):
     print('JOB_METH02')
     with open('job2.log', 'a', errors='ignore', encoding='utf-8') as f:
@@ -102,7 +102,7 @@ async def limited_time_sale():
     else:
         tmp = await wc(url, fn)
 
-    tmp = BeautifulSoup(tmp, "html.parser")  # lxml
+    tmp = BeautifulSoup(tmp, "lxml")  # html.parser
 
     tmp = tmp.find_all('li', class_='rankingList')
 

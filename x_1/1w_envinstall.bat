@@ -1,3 +1,1 @@
 pipenv install
-
-pause

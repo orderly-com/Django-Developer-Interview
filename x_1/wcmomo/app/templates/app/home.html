@@ -1,7 +1,7 @@
 {% extends 'app/base.html' %}
 {% block content %}
 
-<h1>首頁: {{ template_name }}</h1>
+<h3>首頁: {{ template_name }}</h3>
 
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script src="https://d3js.org/d3.v4.js"></script>
@@ -21,7 +21,7 @@
     var Xmin = d3.min(data, d => d.g_price);
 
     var margin = { top: 10, right: 40, bottom: 30, left: 30 };
-    var height = 1600;
+    var height = 720;
     var width = 1200;
 
 
@@ -52,7 +52,7 @@
             .attr("y", 0)
             .attr("fill", "currentColor")
             .attr("text-anchor", "start")
-            .text('折扣比例'))
+            .text('折扣比例(%)'))
 
 
     svg01
@@ -64,7 +64,7 @@
             .attr("y", margin.bottom - margin.top)
             .attr("fill", "currentColor")
             .attr("text-anchor", "end")
-            .text('價錢'))
+            .text('現在售價($)'))
 
 
     svg01.append("g")
