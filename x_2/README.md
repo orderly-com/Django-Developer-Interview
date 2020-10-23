@@ -15,7 +15,7 @@ ANS: `feb aC D AEB`
 > (F) 昨天無意中發現的程式 bug，但不在自已掌管範圍內。
 - 通知 & pass 給負責單位
 > (E) 近 3 天專注開發的一項功能，如果現在不接著工作，很可能會忘記重要事項。
-Make a to-do list in few words right now and do it next week
+- Make a to-do list in few words right now and do it next week
 > (B) 昨天晚上 11 點，客戶寄信來回報的操作錯誤，內容為:"我按了這個按鍵，但它完全沒反應"。
 - 回覆請客戶蒐集基本資訊及狀態，先確認起因為 操作/系統環境/bug
 
