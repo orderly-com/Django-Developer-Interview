@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += [
     'app.apps.AppConfig',
     'django_apscheduler',
+    'django_simple_task',
 ]
 
 # Micahel

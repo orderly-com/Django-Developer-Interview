@@ -13,13 +13,17 @@
 - [x] 使用 async
 
 
-# SOLVED: no such table
-message: `django.db.utils.OperationalError: no such table: django_apscheduler_djangojob`
 
-or longtime: `Performing system checks...`
-1. please comment out `wcmomo\app\views.py`: `@register_job(...)`
-1. after exec: 2w_mig.bat and 3w_run.bat
-1. comment it in
+
+# LINUX 
+1. `chmod a+x *.sh`
+1. `./1L_envinstall.sh`
+1. `./SetupChromeDriver.sh`
+1. `./2w_mig.sh`
+1. `./3w_run.sh`
+
+1. comment in `wcmomo\app\views.py`: line `@register_job(...)`
+
 
 
 # Design

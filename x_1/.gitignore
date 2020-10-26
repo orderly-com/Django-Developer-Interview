@@ -5,3 +5,5 @@
 Pipfile.lock
 debug.log
 job2.log
+*.deb
+chromedriver_linux64.zip
