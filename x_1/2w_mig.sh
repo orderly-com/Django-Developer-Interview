@@ -1,4 +1,3 @@
-
 input=".env"
 while IFS= read -r line
 do
@@ -6,7 +5,9 @@ do
 done < "$input"
 
 
-python3.7 -m pipenv run python $projname/manage.py makemigrations $appnames
-python3.7 -m pipenv run python $projname/manage.py migrate
+makemigrations="python3.7 -m pipenv run python $projname/manage.py makemigrations $appnames"
+migrate="python3.7 -m pipenv run python $projname/manage.py migrate"
 
 
+echo $makemigrations | bash -x
+echo $migrate | bash -x

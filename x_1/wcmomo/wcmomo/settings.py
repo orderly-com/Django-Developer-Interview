@@ -49,13 +49,31 @@ INSTALLED_APPS = [
 # Micahel
 INSTALLED_APPS += [
     'app.apps.AppConfig',
-    'django_apscheduler',
-    'django_simple_task',
+    # 'django_apscheduler',
+    # 'django_simple_task',
+    'background_task',
+    'django_q',
 ]
 
 # Micahel
-APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
-APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+Q_CLUSTER = {
+    'name': 'dq',
+    'workers': 1,
+    'recycle': 500,
+    'timeout': 300,
+    'compress': True,
+    'save_limit': 10,
+    'queue_limit': 5,
+    'cpu_affinity': 1,
+    'label': 'dq',
+    'orm': 'default',
+}
+
+# Micahel
+MAX_ATTEMPTS = 1
+MAX_RUN_TIME = 60
+BACKGROUND_TASK_RUN_ASYNC = True
+# BACKGROUND_TASK_ASYNC_THREADS = 2
 
 
 MIDDLEWARE = [

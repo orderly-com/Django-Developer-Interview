@@ -17,6 +17,7 @@ apscheduler = "*"
 asgiref = "*"
 celery = "*"
 django-simple-task = "*"
+django-background-tasks = "*"
 
 [requires]
 python_version = "3.7"
