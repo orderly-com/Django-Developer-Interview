@@ -16,9 +16,10 @@ Hi,
 爬取 momo購物網(https://www.momoshop.com.tw/main/Main.jsp) 中與促銷活動、特價活動有關的資訊，並將爬回來的資料呈現出來
 
 加分項目：
+- 使用 Django model 儲存資料
+- 使用 CBV
 - 有排程功能
 - 使用 D3.js 呈現資料
-- 使用 CBV
 - 使用 async
 ```
 
