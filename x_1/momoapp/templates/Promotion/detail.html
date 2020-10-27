@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block head_content %}
+<script>
+     $(document).ready(function () {
+        $.ajax({
+            url: '{% url "Promotion_list_detail_api" detail_id %}',
+            type: 'get',
+            dataType: 'json'
+        })
+        .done(function (data) {
+            console.log('success');
+            $.each(data, function(i, data){
+                $('#news_url_' + i).attr('href', data.url);
+                $('#news_title_' + i).text(data.title);
+                $('#news_content_' + i).text(data.content);
+            });
+        })
+        .fail(function () {
+            console.log("error");
+        });
+
+        $('.carousel').carousel({
+            interval: 2000
+        });
+     });
+</script>
+
+<style>
+    .card-img{
+        opacity: 0.9 !important;
+    }
+
+    .card a:hover{
+        opacity: 0.75 !important;
+    }
+</style>
+{% endblock head_content %}
+
+{% block title %} MOMO {% endblock title %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            {% for i in 'xxxx' %}
+                <div class="card bg-dark text-white mx-auto" style="max-width: 60rem;">
+                    <a id="news_url_{{ forloop.counter0 }}" href="#">
+                        <div class="card-img-overlay d-flex">
+                            <h3 id="news_content_{{ forloop.counter0 }}" class="card-title align-self-center mx-auto text-white" ></h3>
+                            <!--<p class="card-text"></p>-->
+                            <!--<p class="card-text"></p>-->
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
