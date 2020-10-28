@@ -1,15 +1,20 @@
-from bs4 import BeautifulSoup
+import os
+import platform
+
+
 import selenium
 from selenium import webdriver
-from time import sleep
-import platform
-import os
 from urllib.parse import urljoin
-from background_task import background
+from time import sleep
+from bs4 import BeautifulSoup
+
+
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent  # -> projname/projname/
 
 
 def wc(url):
-    print('2', url)
+    print(' 2wc', url)
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument(
         'User-Agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"')
@@ -30,20 +35,17 @@ def wc(url):
     browser.get(url)
     js = "var action=document.documentElement.scrollTop=10000"
     browser.execute_script(js)
-
     sleep(40)
     tmp = browser.page_source
     browser.close()  # close tab not quit
-    print('3', url)
+    print(' 3wcok', url)
     return tmp
 
 
-@background(queue='my-queue')
 def par_bank():
-    fn = 'cache_bank.txt'
+    fn = BASE_DIR/'cache_bank.txt'
     url = 'https://www.momoshop.com.tw/edm/cmmedm.jsp?lpn=O0Y2mh4ttZH&n=1&art_page=9'
-    print('1', url)
-
+    # print('1', url)
     tmp = wc(url)
     tmp = BeautifulSoup(tmp, "html.parser")  # lxml
     bank = tmp.find('div', id='Area_bankList',
@@ -54,19 +56,18 @@ def par_bank():
         for _ in b.find('div', class_='bankcard_group_box').find_all('p'):
             bank_card[-1][b.get('data-name')
                           ].append(list(_.stripped_strings))
-    if len(bank_card):  # 有抓到更新
+    # 有抓到更新
+    if len(bank_card):
         with open(fn, mode='w', errors='ignore', encoding='utf-8') as f:
             f.write(str(bank_card))
     print('4', url)
     return bank_card
 
 
-@background(queue='my-queue')
 def par_limited_time_sale():
-    fn = 'cache_limited_sale.txt'
+    fn = BASE_DIR/'cache_limited_sale.txt'
     url = 'https://www.momoshop.com.tw/main/Main.jsp'
-    print('1', url)
-
+    # print('1', url)
     tmp = wc(url)
     tmp = BeautifulSoup(tmp, "lxml")  # html.parser
     tmp = tmp.find_all('li', class_='rankingList')
@@ -87,8 +88,9 @@ def par_limited_time_sale():
         map(list, zip(discount, prdname, href, prdprice, g_price, g_discount)))
     re.sort(key=lambda e: e[0])
     re = [{keys[i]: _[i] for i in range(len(keys))} for _ in re]
-    if len(re):  # 有抓到更新
+    # 有抓到更新
+    if len(re):
         with open(fn, mode='w', errors='ignore', encoding='utf-8') as f:
             f.write(str(re))
-    print('4', url)
+    print(' 4save', url)
     return re

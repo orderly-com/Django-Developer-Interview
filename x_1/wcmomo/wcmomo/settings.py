@@ -17,7 +17,7 @@ import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent  # -> projname/projname/
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,15 +28,13 @@ SECRET_KEY = 'xu0-97+jb@nv2%vcz)v6ev)b7rydi@&6n-ukx0he^l2!%i*e&0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # Michael
+    # '*',
+]
 
-# Michael
-# ALLOWED_HOSTS += [
-#     '*',
-# ]
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,36 +42,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
-
-# Micahel
-INSTALLED_APPS += [
+    # addons:
     'app.apps.AppConfig',
-    # 'django_apscheduler',
-    # 'django_simple_task',
-    'background_task',
     'django_q',
 ]
 
-# Micahel
+
+# for django_q:
 Q_CLUSTER = {
     'name': 'dq',
-    'workers': 1,
-    'recycle': 500,
+    # 'workers': 2,
+    # 'daemonize_workers': True,
+    # 'recycle': 500,
+    # 'max_rss': None,
     'timeout': 300,
-    'compress': True,
-    'save_limit': 10,
-    'queue_limit': 5,
-    'cpu_affinity': 1,
-    'label': 'dq',
-    'orm': 'default',
-}
+    # 'ack_failures': False,
+    'max_attempts': 0,
+    'retry': 310,
+    # 'compress': False,
+    # 'save_limit': 250,
+    # Guard loop sleep in seconds, must be greater than 0 and less than 60.
+    # 'guard_cycle': 1,
+    # 'sync': False,
 
-# Micahel
-MAX_ATTEMPTS = 1
-MAX_RUN_TIME = 60
-BACKGROUND_TASK_RUN_ASYNC = True
-# BACKGROUND_TASK_ASYNC_THREADS = 2
+    # Defaults to workers**2.
+    # can help balance the workload and the memory overhead of each individual cluster
+    'queue_limit': 5,
+    # 'label': 'Django Q',
+    'catch_up': False,  # !!!!
+
+    'orm': 'default',
+    'cpu_affinity': 2,
+}
 
 
 MIDDLEWARE = [
@@ -91,7 +91,10 @@ ROOT_URLCONF = 'wcmomo.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # Michael
+            BASE_DIR / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,17 +106,13 @@ TEMPLATES = [
         },
     },
 ]
-# Michael
-TEMPLATES[0]['DIRS'] += [
-    os.path.join(BASE_DIR, 'templates'),
-]
+
 
 WSGI_APPLICATION = 'wcmomo.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -124,7 +123,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -145,13 +143,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 
-LANGUAGE_CODE = 'en-us'
-# Michael
+# LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'zh-hant'
 
 
-TIME_ZONE = 'UTC'
-# Michael
+# TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/Taipei'
 
 
@@ -164,14 +160,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
 STATIC_URL = '/static/'
 
 
 # Michael
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+LOGIN_REDIRECT_URL = '/'  # after login, redirect
+
 
 # Michael
-LOGIN_REDIRECT_URL = '/'
+STATICFILES_DIRS = [
+    BASE_DIR / STATIC_URL,  # os.path.join(BASE_DIR, "static"),
+]

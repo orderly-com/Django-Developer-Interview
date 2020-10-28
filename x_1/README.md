@@ -1,3 +1,34 @@
+# 說明
+- 改用 django q
+- 補 Linux 之 selenium
+- 解釋一下: 
+  - 原設計為爬取網頁後存放於檔案(沒有包入上傳repo)，點擊網頁後若無檔案則重爬，並於背景驅動不斷更新
+  - 此次上傳，補上預先抓取之檔案
+
+
+# linux 懶人包
+```
+請先使用`LSetupChromeDriver.sh`設定chrome for linux
+使用`Linux_pipenv_settings.sh`依序執行選項: 
+1 & 2
+手動create_su
+3 開啟排程
+4 runserver
+查看網頁及排程
+http://127.0.0.1:8000/admin/django_q/schedule/
+http://127.0.0.1:8000
+```
+
+# TODO 20201028 UPDATE 
+- [x] django q
+- [x] chrome and setups for linux
+- [] add logging
+
+
+
+---
+
+
 ### 挑戰一: Django 熟悉度 (folder: x_1)
 
 > 請用 Django 實作以下功能
@@ -13,16 +44,6 @@
 - [x] 使用 async
 
 
-
-
-# LINUX 
-1. `chmod a+x *.sh`
-1. `./1L_envinstall.sh`
-1. `./SetupChromeDriver.sh`
-1. `./2w_mig.sh`
-1. `./3w_run.sh`
-
-1. comment in `wcmomo\app\views.py`: line `@register_job(...)`
 
 
 
