@@ -1,12 +1,16 @@
 import os
 import platform
 
-
 import selenium
 from selenium import webdriver
 from urllib.parse import urljoin
 from time import sleep
 from bs4 import BeautifulSoup
+import json
+
+
+from .models import Bank_card
+from .models import Limited_time_sale
 
 
 from pathlib import Path
@@ -42,55 +46,75 @@ def wc(url):
     return tmp
 
 
-def par_bank():
-    fn = BASE_DIR/'cache_bank.txt'
+def par_bank_card():
+    fn_prefix = 'cache_bank_card'
     url = 'https://www.momoshop.com.tw/edm/cmmedm.jsp?lpn=O0Y2mh4ttZH&n=1&art_page=9'
-    # print('1', url)
     tmp = wc(url)
     tmp = BeautifulSoup(tmp, "html.parser")  # lxml
     bank = tmp.find('div', id='Area_bankList',
                     class_='Area_bankList').find('ul').find_all('li')
     bank_card = []
+    dict_keys = ['bank_name', 'date', 'suffice', 'discount']
     for b in bank:
-        bank_card.append({b.get('data-name'): []})
         for _ in b.find('div', class_='bankcard_group_box').find_all('p'):
-            bank_card[-1][b.get('data-name')
-                          ].append(list(_.stripped_strings))
-    # 有抓到更新
+            bank_card.append(
+                dict(zip(dict_keys, [b.get('data-name')]+list(_.stripped_strings))))
+
     if len(bank_card):
-        with open(fn, mode='w', errors='ignore', encoding='utf-8') as f:
-            f.write(str(bank_card))
-    print('4', url)
+        save_cache(fn_prefix, bank_card)
+        # save to db
+        for row in bank_card:
+            obj = Bank_card.objects
+            if not obj.filter(**row):
+                tmp = obj.create(**row)
+                tmp.save()
+            else:
+    print(' 4save', url)
     return bank_card
 
 
 def par_limited_time_sale():
-    fn = BASE_DIR/'cache_limited_sale.txt'
+    fn_prefix = 'cache_limited_sale'
     url = 'https://www.momoshop.com.tw/main/Main.jsp'
-    # print('1', url)
-    tmp = wc(url)
-    tmp = BeautifulSoup(tmp, "lxml")  # html.parser
-    tmp = tmp.find_all('li', class_='rankingList')
-    href = [urljoin(url, _.find('a').get('href')) for _ in tmp]
-    tmp = [_.find('a') for _ in tmp]
-    prdname = [_.find('p', class_='prdname').text for _ in tmp]
-    prdprice = [_.find('p', class_='prdprice').find(
-        'span', class_='prdprice_box02').text for _ in tmp]
-    discount = [_.find('p', class_='prdprice').find(
-        'span', class_='prdprice_box01').find('b', class_='discount').text for _ in tmp]
-    g_price = [int(x.replace('$', '').replace(',', '')) for x in prdprice]
-    g_discount = [format(_.replace('折', ''), '0<2') for _ in discount]
-    g_discount = [100-int(float(_)) for _ in g_discount]
+    html = wc(url)
+    html = BeautifulSoup(html, "lxml")  # html.parser
+    html = html.find_all('li', class_='rankingList')
+    dict_timesale = []
+    keys = ['href', 'imgsrc', 'prdname', 'discount',
+            'g_discount', 'prdprice', 'g_prdprice']
+    for _ in html:
+        href = urljoin(url, (_.find('a').get('href')))
+        imgsrc = _.find('img').get('src').rsplit('?', 1)[0]
+        prdname = _.find('p', class_='prdname').text
+        discount = _.find('span', class_='prdprice_box01').find('b').text
+        g_discount = 100-int(float(format(discount.rstrip('折'), '0<2')))
 
-    keys = ['discount', 'prdname', 'href',
-            'prdprice', 'g_price', 'g_discount']
-    re = list(
-        map(list, zip(discount, prdname, href, prdprice, g_price, g_discount)))
-    re.sort(key=lambda e: e[0])
-    re = [{keys[i]: _[i] for i in range(len(keys))} for _ in re]
-    # 有抓到更新
-    if len(re):
-        with open(fn, mode='w', errors='ignore', encoding='utf-8') as f:
-            f.write(str(re))
+        prdprice = _.find('span', class_='prdprice_box02').text
+        g_prdprice = int(prdprice.lstrip('$').replace(',', ''))
+
+        dict_timesale.append(
+            dict(zip(keys, [href, imgsrc, prdname, discount, g_discount, prdprice, g_prdprice])))
+
+    if len(dict_timesale):
+        save_cache(fn_prefix, dict_timesale)
+
+        # 不比對之欄位
+        uf = ['href', 'imgsrc']
+        # to db
+        for row in dict_timesale:
+            row_rm_url = dict(row)
+            for _ in uf:
+                row_rm_url.pop(_, None)
+
+            obj = Limited_time_sale.objects
+            if not obj.filter(**row_rm_url):
+                tmp = obj.create(**row)
+                tmp.save()
+
     print(' 4save', url)
-    return re
+    return dict_timesale
+
+
+def save_cache(fn_prefix, obj):
+    with open(str(BASE_DIR/fn_prefix)+'.json', mode='w', errors='ignore', encoding='utf-8') as f:
+        json.dump(obj, f, indent=4, ensure_ascii=False)

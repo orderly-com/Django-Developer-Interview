@@ -14,11 +14,13 @@
     var data = {{ ltsale }};
     {% endautoescape %}
 
-    var Ymax = d3.max(data, d => d.g_discount);
-    var Ymin = d3.min(data, d => d.g_discount);
+    // document.write(data)
 
-    var Xmax = d3.max(data, d => d.g_price);
-    var Xmin = d3.min(data, d => d.g_price);
+    var Ymax = d3.max(data, d => parseInt(d.g_discount));
+    var Ymin = d3.min(data, d => parseInt(d.g_discount));
+
+    var Xmax = d3.max(data, d => parseInt(d.g_prdprice));
+    var Xmin = d3.min(data, d => parseInt(d.g_prdprice));
 
     var margin = { top: 10, right: 40, bottom: 30, left: 30 };
     var height = 720;
@@ -75,8 +77,8 @@
         .data(data)
         .enter()
         .append("circle")
-        .attr("cx", d => scaleX(d.g_price))
-        .attr("cy", d => scaleY(d.g_discount))
+        .attr("cx", d => scaleX(parseInt(d.g_prdprice)))
+        .attr("cy", d => scaleY(parseInt(d.g_discount)))
         .attr("r", 3)
 
     svg01.append("g")
@@ -87,8 +89,8 @@
         .enter()
         .append("text")
         .attr("dy", "0.35em")
-        .attr("x", d => scaleX(d.g_price) + 5)
-        .attr("y", d => scaleY(d.g_discount))
+        .attr("x", d => scaleX(parseInt(d.g_prdprice)) + 5)
+        .attr("y", d => scaleY(parseInt(d.g_discount)))
         .append('a')
         .attr('href', d => d.href)
         .text(d => d.prdname);
@@ -96,8 +98,8 @@
 
 </script>
 
-
 {% if bank_card %}
+<!-- ['bank_name', 'data', 'suffice', 'discount'] -->
 <table style="border:3px #cccccc solid;" cellpadding="10" border='1'>
 
     <tr>
@@ -106,18 +108,13 @@
         <td> 優惠規則 </td>
         <td> 優惠金額 </td>
     </tr>
-
-    {% for bank in bank_card %}
-    {% for k,v in bank.items %}
-    {% for d in v %}
+    {% for bc in bank_card %}
     <tr>
-        <td>{{ k }}</td>
-        {% for d3 in d %}
-        <td> {{ d3 }} </td>
-        {% endfor %}
+        <td> {{ bc.bank_name }} </td>
+        <td> {{ bc.date }} </td>
+        <td> {{ bc.suffice }} </td>
+        <td> {{ bc.discount }} </td>
     </tr>
-    {% endfor %}
-    {% endfor %}
     {% endfor %}
 </table>
 {% endif %}
@@ -127,25 +124,20 @@
 <BR>
 
 
+   
 {% if ltsale %}
 <table style="border:3px #cccccc solid;" cellpadding="10" border='1'>
     <tr>
         <td> 折扣(低至高) </td>
         <td> 品名 </td>
         <td> 金額 </td>
-
-
-
     </tr>
-
+    
     {% for item in ltsale %}
     <tr>
         <td> {{ item.discount }} </td>
-        <td> <a href="{{ href }}"> {{ item.prdname }} </a> </td>
+        <td> <a href="{{ item.href }}"> {{ item.prdname }} </a> </td>
         <td> {{ item.prdprice }} </td>
-
-
-
     </tr>
     {% endfor %}
 
@@ -157,9 +149,3 @@
 
 
 {% endblock  %}
-
-<!-- <td> g_price </td>
-<td> g_discount </td>
-
-<td> {{ item.g_price }} </td>
-<td> {{ item.g_discount }} </td> -->

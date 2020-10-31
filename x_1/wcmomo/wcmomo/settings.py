@@ -42,9 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # addons:
+    # addons.....................
     'app.apps.AppConfig',
     'django_q',
+    'rangefilter',
 ]
 
 
@@ -113,10 +114,21 @@ WSGI_APPLICATION = 'wcmomo.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+# PGDB
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'jg1',
+        'USER': 'jg1',
+        'PASSWORD': 'jg1',
+        'HOST': 'localhost',
+        'POST': '',
     }
 }
 

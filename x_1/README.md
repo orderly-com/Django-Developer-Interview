@@ -1,3 +1,13 @@
+# TODO
+- [x] DB
+- [x] models
+- [x] json
+- [x] k:v
+- [ ] docker
+- [ ] django env
+
+
+
 # 說明
 - 改用 django q
 - 補 Linux 之 selenium
@@ -12,8 +22,8 @@
 使用`Linux_pipenv_settings.sh`依序執行選項: 
 1 & 2
 手動create_su
-3 開啟排程
-4 runserver
+4 開啟排程
+3 runserver
 查看網頁及排程
 http://127.0.0.1:8000/admin/django_q/schedule/
 http://127.0.0.1:8000
@@ -22,7 +32,7 @@ http://127.0.0.1:8000
 # TODO 20201028 UPDATE 
 - [x] django q
 - [x] chrome and setups for linux
-- [] add logging
+- [ ] add logging
 
 
 

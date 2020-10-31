@@ -1,0 +1,734 @@
+[
+    {
+        "bank_name": "國泰世華銀行",
+        "date": "10/16-31",
+        "suffice": "單筆滿$25,000",
+        "discount": "贈1,100"
+    },
+    {
+        "bank_name": "國泰世華銀行",
+        "date": "10/16-31",
+        "suffice": "單筆滿$6,000",
+        "discount": "贈250"
+    },
+    {
+        "bank_name": "國泰世華銀行",
+        "date": "10/1-15",
+        "suffice": "單筆滿$25,000",
+        "discount": "贈1,100"
+    },
+    {
+        "bank_name": "國泰世華銀行",
+        "date": "10/1-15",
+        "suffice": "單筆滿$6,000",
+        "discount": "贈250"
+    },
+    {
+        "bank_name": "國泰世華銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈2,200"
+    },
+    {
+        "bank_name": "中國信託銀行",
+        "date": "10/1-31",
+        "suffice": "分期消費",
+        "discount": "贈5%刷卡金"
+    },
+    {
+        "bank_name": "中國信託銀行",
+        "date": "10/25-31",
+        "suffice": "單筆滿$2,000",
+        "discount": "贈100"
+    },
+    {
+        "bank_name": "中國信託銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$8,000",
+        "discount": "贈600"
+    },
+    {
+        "bank_name": "中國信託銀行",
+        "date": "週四",
+        "suffice": "單筆滿$2,000",
+        "discount": "贈120"
+    },
+    {
+        "bank_name": "中國信託銀行",
+        "date": "新戶限定",
+        "suffice": "累積滿$20,000",
+        "discount": "贈行李箱"
+    },
+    {
+        "bank_name": "台新銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$5,000",
+        "discount": "贈200"
+    },
+    {
+        "bank_name": "台新銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$15,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "台新銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈2,200"
+    },
+    {
+        "bank_name": "台新銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$10,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "台新銀行",
+        "date": "行動支付",
+        "suffice": "@GoGo卡",
+        "discount": "最高6%回饋"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "10/1-31",
+        "suffice": "累積滿$6,000",
+        "discount": "贈300"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "10/1-31",
+        "suffice": "累積滿$18,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "10/1-31",
+        "suffice": "累積滿$25,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "10/6-10",
+        "suffice": "累積滿$10,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "10/6-10",
+        "suffice": "累積滿$35,000",
+        "discount": "贈3,500"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "週三",
+        "suffice": "單筆滿$1,500",
+        "discount": "贈100"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "行動支付",
+        "suffice": "永豐幣倍卡",
+        "discount": "最高8%回饋"
+    },
+    {
+        "bank_name": "永豐銀行",
+        "date": "限期",
+        "suffice": "LINE Pay Money",
+        "discount": "最高18%"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "10/1-31",
+        "suffice": "首刷禮",
+        "discount": "贈200+影音服務"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "10/1-31",
+        "suffice": "450大品牌",
+        "discount": "免登送10%"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "限期",
+        "suffice": "首刷天天抽",
+        "discount": "SWITCH"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "週六",
+        "suffice": "單筆滿3000",
+        "discount": "贈300"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "10/1-31",
+        "suffice": "十大指定通路",
+        "discount": "最高10%"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "10/1-31",
+        "suffice": "五大訂房網",
+        "discount": "最高5%"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "10/1-31",
+        "suffice": "推薦好友送",
+        "discount": "$200無上限"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "天天買",
+        "suffice": "筆筆回饋",
+        "discount": "5%無上限"
+    },
+    {
+        "bank_name": "momo卡",
+        "date": "限量",
+        "suffice": "富邦數位帳戶扣繳",
+        "discount": "享300"
+    },
+    {
+        "bank_name": "玉山銀行",
+        "date": "10/16-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "花旗銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$5,000",
+        "discount": "贈250"
+    },
+    {
+        "bank_name": "花旗銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$12,000",
+        "discount": "贈700"
+    },
+    {
+        "bank_name": "花旗銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$25,000",
+        "discount": "贈1,600"
+    },
+    {
+        "bank_name": "花旗銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$8,000",
+        "discount": "贈960"
+    },
+    {
+        "bank_name": "花旗銀行",
+        "date": "週一",
+        "suffice": "單筆滿$888",
+        "discount": "贈50"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "10/16-27",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈2,000"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "10/26-31",
+        "suffice": "單筆滿$22,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "10/1-31",
+        "suffice": "累積滿$6,000",
+        "discount": "贈300"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "10/1-31",
+        "suffice": "累積滿$20,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "10/14-15",
+        "suffice": "單筆滿$8,888",
+        "discount": "贈666"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "10/1-10",
+        "suffice": "單筆滿$15,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "10/1-10",
+        "suffice": "單筆滿$35,000",
+        "discount": "贈2,800"
+    },
+    {
+        "bank_name": "聯邦銀行",
+        "date": "週日",
+        "suffice": "單筆滿$1,000",
+        "discount": "贈100"
+    },
+    {
+        "bank_name": "遠東商銀",
+        "date": "10/1-31",
+        "suffice": "單筆滿$3,000",
+        "discount": "回饋2%"
+    },
+    {
+        "bank_name": "遠東商銀",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "加贈500"
+    },
+    {
+        "bank_name": "遠東商銀",
+        "date": "10/1-10",
+        "suffice": "單筆滿$10,000",
+        "discount": "加贈HAPPYGO點數1,000點"
+    },
+    {
+        "bank_name": "遠東商銀",
+        "date": "行動支付",
+        "suffice": "不限金額",
+        "discount": "回饋5%"
+    },
+    {
+        "bank_name": "遠東商銀",
+        "date": "週五",
+        "suffice": "單筆滿$1,288",
+        "discount": "贈100"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$3,000",
+        "discount": "贈180"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$15,000",
+        "discount": "贈900"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈1,800"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "10/4-12",
+        "suffice": "單筆滿$5,000",
+        "discount": "贈600"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "10/4-12",
+        "suffice": "單筆滿$10,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "10/4-12",
+        "suffice": "單筆滿$35,000",
+        "discount": "贈3,500"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "10/4-12",
+        "suffice": "單筆滿$50,000",
+        "discount": "贈5,000"
+    },
+    {
+        "bank_name": "第一銀行",
+        "date": "週一",
+        "suffice": "單筆滿$1,388",
+        "discount": "贈100"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$6,000",
+        "discount": "贈400"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$22,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$38,000",
+        "discount": "贈3,000"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "10/1-31",
+        "suffice": "累積滿$10,000",
+        "discount": "贈600"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "10/1-31",
+        "suffice": "累積滿$75,000",
+        "discount": "贈5,000"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "10/1-16",
+        "suffice": "單筆滿$16,000",
+        "discount": "贈1,600"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "10/14-15",
+        "suffice": "單筆滿$10,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "星展銀行",
+        "date": "週二",
+        "suffice": "單筆滿$2,500",
+        "discount": "贈150"
+    },
+    {
+        "bank_name": "匯豐銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$15,000",
+        "discount": "贈900"
+    },
+    {
+        "bank_name": "匯豐銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$5,000",
+        "discount": "贈500"
+    },
+    {
+        "bank_name": "匯豐銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$35,000",
+        "discount": "贈3,500"
+    },
+    {
+        "bank_name": "樂天信用卡",
+        "date": "10/1-10/31",
+        "suffice": "不限金額",
+        "discount": "回饋4%"
+    },
+    {
+        "bank_name": "樂天信用卡",
+        "date": "10/1-12/31",
+        "suffice": "累積滿$6,000",
+        "discount": "贈200"
+    },
+    {
+        "bank_name": "樂天信用卡",
+        "date": "10/1-12/31",
+        "suffice": "累積滿$12,000",
+        "discount": "贈350"
+    },
+    {
+        "bank_name": "樂天信用卡",
+        "date": "10/1-12/31",
+        "suffice": "累積滿$30,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "樂天信用卡",
+        "date": "10/1-12/31",
+        "suffice": "累積滿$50,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "樂天信用卡",
+        "date": "10/6-10/10",
+        "suffice": "單筆滿$10,000",
+        "discount": "回饋9%"
+    },
+    {
+        "bank_name": "華南銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$20,000",
+        "discount": "贈1,600"
+    },
+    {
+        "bank_name": "華南銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈2,700"
+    },
+    {
+        "bank_name": "華南銀行",
+        "date": "額滿",
+        "suffice": "單筆滿$40,000",
+        "discount": "贈4,000"
+    },
+    {
+        "bank_name": "華南銀行",
+        "date": "額滿",
+        "suffice": "單筆滿$50,000",
+        "discount": "贈5,000"
+    },
+    {
+        "bank_name": "陽信銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$3,000",
+        "discount": "贈180"
+    },
+    {
+        "bank_name": "陽信銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$25,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "陽信銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$15,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "陽信銀行",
+        "date": "週六",
+        "suffice": "單筆滿$1,000",
+        "discount": "贈100"
+    },
+    {
+        "bank_name": "凱基銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$15,000",
+        "discount": "贈1,200"
+    },
+    {
+        "bank_name": "凱基銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$10,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "凱基銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$35,000",
+        "discount": "贈3,500"
+    },
+    {
+        "bank_name": "凱基銀行",
+        "date": "10/1-5",
+        "suffice": "單筆滿$5,000",
+        "discount": "贈400"
+    },
+    {
+        "bank_name": "凱基銀行",
+        "date": "10/1-5",
+        "suffice": "單筆滿$10,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "凱基銀行",
+        "date": "限期",
+        "suffice": "單筆滿$1,500",
+        "discount": "贈120"
+    },
+    {
+        "bank_name": "新光銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈1500"
+    },
+    {
+        "bank_name": "兆豐銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$5,000",
+        "discount": "贈300"
+    },
+    {
+        "bank_name": "兆豐銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$25,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "兆豐銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$10,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "美國運通",
+        "date": "10/1-31",
+        "suffice": "單筆滿$20,000",
+        "discount": "贈1,200"
+    },
+    {
+        "bank_name": "美國運通",
+        "date": "10/1-31",
+        "suffice": "單筆滿$5000",
+        "discount": "享50%加碼"
+    },
+    {
+        "bank_name": "美國運通",
+        "date": "10/1-31",
+        "suffice": "積分折抵刷卡金",
+        "discount": "享50%加碼"
+    },
+    {
+        "bank_name": "日盛銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$3,000",
+        "discount": "贈150"
+    },
+    {
+        "bank_name": "日盛銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$20,000",
+        "discount": "贈1,000"
+    },
+    {
+        "bank_name": "日盛銀行",
+        "date": "週五",
+        "suffice": "單筆滿$8,888",
+        "discount": "贈666"
+    },
+    {
+        "bank_name": "上海商銀",
+        "date": "10/1-31",
+        "suffice": "單筆滿$20,000",
+        "discount": "贈1,200"
+    },
+    {
+        "bank_name": "上海商銀",
+        "date": "10/1-31",
+        "suffice": "單筆滿$3,000",
+        "discount": "贈200"
+    },
+    {
+        "bank_name": "上海商銀",
+        "date": "10/6-10",
+        "suffice": "單筆滿$35,000",
+        "discount": "贈3,500"
+    },
+    {
+        "bank_name": "台中銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$5,000",
+        "discount": "贈300"
+    },
+    {
+        "bank_name": "台中銀行",
+        "date": "10/1-31",
+        "suffice": "刷樂購卡",
+        "discount": "享1.5%現金回饋"
+    },
+    {
+        "bank_name": "台中銀行",
+        "date": "10/6-10",
+        "suffice": "單筆滿$20,000",
+        "discount": "贈2,400"
+    },
+    {
+        "bank_name": "合作金庫",
+        "date": "10/1-31",
+        "suffice": "單筆滿$3,000",
+        "discount": "贈100"
+    },
+    {
+        "bank_name": "合作金庫",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈2,000"
+    },
+    {
+        "bank_name": "彰化銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$6,000",
+        "discount": "贈300"
+    },
+    {
+        "bank_name": "彰化銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈2,100"
+    },
+    {
+        "bank_name": "unionpay",
+        "date": "10/1-31",
+        "suffice": "單筆滿5,000",
+        "discount": "贈6%"
+    },
+    {
+        "bank_name": "unionpay",
+        "date": "10/1-31",
+        "suffice": "單筆滿15,000",
+        "discount": "贈8%"
+    },
+    {
+        "bank_name": "unionpay",
+        "date": "10/1-31",
+        "suffice": "單筆滿30,000",
+        "discount": "贈10%"
+    },
+    {
+        "bank_name": "臺灣銀行",
+        "date": "10/1-31",
+        "suffice": "單筆滿10,000",
+        "discount": "贈300"
+    },
+    {
+        "bank_name": "JCB",
+        "date": "10/1-31",
+        "suffice": "週週單筆滿2000",
+        "discount": "贈200"
+    },
+    {
+        "bank_name": "momo",
+        "date": "10/1-31",
+        "suffice": "單筆滿$30,000",
+        "discount": "贈1,500"
+    },
+    {
+        "bank_name": "momo",
+        "date": "10/1-31",
+        "suffice": "單筆滿$50,000",
+        "discount": "贈2,500"
+    },
+    {
+        "bank_name": "超取活動",
+        "date": "10/6-9",
+        "suffice": "單筆滿$399",
+        "discount": "贈50"
+    },
+    {
+        "bank_name": "超取活動",
+        "date": "10/6-10",
+        "suffice": "滿2筆",
+        "discount": "加贈100"
+    },
+    {
+        "bank_name": "711",
+        "date": "10/26-31",
+        "suffice": "單筆滿$399",
+        "discount": "贈精品熱拿鐵"
+    },
+    {
+        "bank_name": "711",
+        "date": "10/6-10",
+        "suffice": "單筆滿$399",
+        "discount": "贈中杯熱拿鐵"
+    },
+    {
+        "bank_name": "family",
+        "date": "10/12-10/31",
+        "suffice": "全家取貨",
+        "discount": "抽Switch"
+    }
+]
