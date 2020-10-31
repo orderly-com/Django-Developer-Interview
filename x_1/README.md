@@ -3,8 +3,10 @@
 - [x] models
 - [x] json
 - [x] k:v
-- [ ] docker
+- [ ] docker & chrome
 - [ ] django env
+- [ ] createsu
+- [ ] start qcluster
 
 
 

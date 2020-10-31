@@ -31,9 +31,6 @@ def obj_to_dict(model_instance):
 
 def home(request):
     template_name = 'app/home.html'
-    # bank_card = get_cache(BASE_DIR/'cache_bank_card.json')
-    # ltsale = get_cache(BASE_DIR/'cache_limited_sale.json')
-    bank_card = Bank_card.objects.all()
 
     tmp = Limited_time_sale.objects.all()
     ltsale = []
@@ -44,6 +41,12 @@ def home(request):
         # _['g_discount'] = int(_['g_discount'])
         # _['g_prdprice'] = int(_['g_prdprice'])
         ltsale.append(_)
+    if not len(ltsale):
+        ltsale = get_cache(BASE_DIR/'cache_limited_sale.json')
+
+    bank_card = Bank_card.objects.all()
+    if not len(bank_card):
+        bank_card = get_cache(BASE_DIR/'cache_bank_card.json')
 
     if not Schedule.objects.filter(func='app.tasks.par_limited_time_sale').exists():
         Schedule.objects.create(func='app.tasks.par_limited_time_sale',
