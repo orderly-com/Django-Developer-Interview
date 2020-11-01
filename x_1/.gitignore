@@ -2,9 +2,6 @@
 .vscode/
 
 
-Pipfile.lock
-
-
 debug.log
 job2.log
 
