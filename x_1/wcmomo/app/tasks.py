@@ -25,17 +25,18 @@ def wc(url):
     if os.name == 'nt':
         Chrome_driver_path = r'chromedriver_86.0.4240.22_win32.exe'
         chrome_options.add_argument("headless")
+        browser = webdriver.Chrome(
+            executable_path=Chrome_driver_path,
+            chrome_options=chrome_options)
     elif 'inux' in platform.system():
-        Chrome_driver_path = r'/usr/local/share/chromedriver'
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-dev-shm-usage')
+        browser = webdriver.Chrome(chrome_options=chrome_options)
     else:
         print('sorry please check os & selenium browser driver!')
-    browser = webdriver.Chrome(
-        executable_path=Chrome_driver_path,
-        chrome_options=chrome_options)
+
     browser.get(url)
     js = "var action=document.documentElement.scrollTop=10000"
     browser.execute_script(js)
@@ -68,7 +69,6 @@ def par_bank_card():
             if not obj.filter(**row):
                 tmp = obj.create(**row)
                 tmp.save()
-            else:
     print(' 4save', url)
     return bank_card
 

@@ -4,21 +4,13 @@ services:
   db:
     image: postgres:9.5
     restart: always
-    # ports:
-    #   - "5432:5432"
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_PASSWORD=postgres
-
       - POSTGRES_PORT=5432
-      # - POSTGRES_NAME=postgres
-      # - POSTGRES_USER=postgres
-      # - POSTGRES_DB=postgres
-      # - POSTGRES_HOST_AUTH_METHOD=trust
 
   web:
     build: .
-    # image: ooo
     restart: always
     ports:
       - "8000:8000"
@@ -28,11 +20,3 @@ services:
       bash -c "pipenv run python manage.py makemigrations app
       && pipenv run python manage.py migrate
       && pipenv run python manage.py runserver 0.0.0.0:8000"
-
-  crawler:
-    build: .
-    # image: ooo
-    command: "pipenv run python manage.py qcluster"
-    depends_on:
-      - web
-#&& echo \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('ub1', '', 'ub1')\" | pipenv run python manage.py shell
