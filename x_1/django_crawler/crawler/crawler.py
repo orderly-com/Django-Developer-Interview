@@ -4,6 +4,9 @@ import asyncio
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 
+from crawler.models import Commodity
+from crawler.models import Category
+
 loop = asyncio.get_event_loop()
 ua = UserAgent()
 
@@ -13,7 +16,7 @@ def assignment_group(_list, step):
 
 
 def get_request(url):
-    headers = {"user-agent": ua.random}
+    headers = {'user-agent': ua.random}
     while True:
         try:
             res = requests.get(url, headers=headers, timeout=10)
@@ -26,8 +29,10 @@ def get_category():
     category_data_list = list()
     home_url = 'https://www.momoshop.com.tw/main/Main.jsp'
     res = get_request(home_url)
-    soup = BeautifulSoup(res.text, "html.parser")
-    category_list = soup.select(".menuList .ulli")
+    soup = BeautifulSoup(res.text, 'html.parser')
+    category_list = soup.select('.menuList .ulli')
+
+    category_id = 0
 
     for category in category_list:
         category_group = category.select('a')
@@ -37,6 +42,12 @@ def get_category():
 
         category_data = [category_name, url]
         category_data_list.append(category_data)
+
+        Category.objects.create(category_id=category_id,
+                                name=category_name,
+                                url=url)
+
+        category_id = category_id + 1
 
     return category_data_list
 
@@ -53,20 +64,27 @@ async def get_commodity(category, url):
         page_list = list(range(1, int(page_number)+1))
 
         for page in page_list:
-            page_url = "{}&pageNum={}".format(discount_url, page)
+            page_url = '{}&pageNum={}'.format(discount_url, page)
             res = await loop.run_in_executor(None, get_request, page_url)
-            soup = BeautifulSoup(res.text, "html.parser")
-            commodity_data_list = soup.select(".eachGood")
+            soup = BeautifulSoup(res.text, 'html.parser')
+            commodity_data_list = soup.select('.eachGood')
 
             for commodity_data in commodity_data_list:
-                title = commodity_data.select(".prdName")[0].get("title")
-                #price = commodity_data.select(".prdPrice.bsprdPrice")[0].select("b")[0].text
-                price = commodity_data.select(".prdPrice")[0].select("b")[0].text
+                title = commodity_data.select('.prdName')[0].get('title')
+                #price = commodity_data.select('.prdPrice.bsprdPrice')[0].select('b')[0].text
+                price = commodity_data.select('.prdPrice')[0].select('b')[0].text
 
-                main_url = "https://www.momoshop.com.tw"
-                commodity_url = main_url + commodity_data.select("a")[0].get("href")
+                main_url = 'https://www.momoshop.com.tw'
+                commodity_url = main_url + commodity_data.select('a')[0].get('href')
 
-                print('Title: {}, Price: {}, Url: {}'.format(title, price, commodity_url))
+                #print('Title: {}, Price: {}, Url: {}'.format(title, price, commodity_url))
+                _category = Category.objects.filter(name=category, status='1')
+
+                _category[0].commoditys.create(title=title,
+                                         price=price,
+                                         discount_type=discount_type,
+                                         url=commodity_url)
+
 
 
 
@@ -82,6 +100,12 @@ def crawl():
             tasks.append(task)
 
         loop.run_until_complete(asyncio.wait(tasks))
+
+    Commodity.objects.filter(status='1').update(status='2')
+    Commodity.objects.filter(status='0').update(status='1')
+
+    Category.objects.filter(status='1').update(status='2')
+    Category.objects.filter(status='0').update(status='1')
 
 
 
