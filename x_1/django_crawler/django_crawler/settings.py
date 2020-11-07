@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CRONJOBS = [
+    ('0 0 * * *', 'crawler.crawler.crawl')
+]
 
 # Application definition
 
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'crawler',
 ]
 
