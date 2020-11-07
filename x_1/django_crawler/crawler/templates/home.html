@@ -1,1 +1,100 @@
-HI! Web!
+{% extends "base.html" %}
+{% block content %}
+<style type="text/css">
+    .center {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-flow: column;
+        height: 12.5vw;
+    }
+    .category-box {
+        position: absolute;
+        width: 100%;
+        color: white;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+<script type="text/javascript">
+    window.addEventListener("load", function () {
+        $(".category-box, .nav-select").click(function() {
+            $("#category-box").hide();
+            $("#commodity-box").empty();
+
+            if ($('#navbar-box').hasClass("show")){
+                $('.collapse').collapse("hide");
+                $(".navbar").removeClass('show');
+            }
+
+            let category_id = $(this).attr("data-category_id");
+            url = "/api/commodity/" + category_id;
+
+            d3.text(url).then(function(datasetText) {
+                let rows  = d3.csvParseRows(datasetText),
+                table = d3.select("#commodity-box")
+                        .append("table")
+                        .style("border-collapse", "collapse")
+                        .style("border", "2px black solid")
+                        .style("width", "100%");
+
+                table
+                .append("thead")
+                .append("tr")
+                .selectAll("th")
+                .data(rows[0])
+                .enter().append("th")
+                .text(function(d) { return d; })
+                .style("border", "1px black solid")
+                .style("padding", "5px")
+                .style("background-color", "lightgray")
+                .style("font-weight", "bold")
+                .style("text-transform", "uppercase");
+
+                table
+                .append("tbody")
+                .selectAll("tr")
+                .data(rows.slice(1))
+                .enter().append("tr")
+                .selectAll("td")
+                .data(function(d){return d;})
+                .enter().append("td")
+                .style("border", "1px black solid")
+                .style("padding", "5px")
+                .on("mouseover", function(){
+                    d3.select(this).style("background-color", "darkgray");
+                })
+                .on("mouseout", function(){
+                    d3.select(this).style("background-color", "white");
+                })
+                .text(function(d){return d;})
+                .style("font-size", "12px");
+            });
+        });
+    });
+</script>
+
+<div id="main-box">
+    <div id="category-box">
+        <div class="row">
+            {% for category in category_list %}
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3 center p-0">
+                <div class="category-box center" data-category_id="{{ category.category_id }}">
+                    {{ category.name }}
+                </div>
+                <!--
+                <a href="{{ category.category_id }}" data-category_id="{{ category.category_id }}">
+                    {{ category.name }}
+                </a>
+                -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="commodity-box">
+    </div>
+</div>
+{% endblock %}

@@ -78,7 +78,7 @@ async def get_commodity(category, url):
                 commodity_url = main_url + commodity_data.select('a')[0].get('href')
 
                 #print('Title: {}, Price: {}, Url: {}'.format(title, price, commodity_url))
-                _category = Category.objects.filter(name=category, status='1')
+                _category = Category.objects.filter(name=category, status='0')
 
                 _category[0].commoditys.create(title=title,
                                          price=price,
