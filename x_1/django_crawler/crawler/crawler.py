@@ -1,5 +1,6 @@
 import requests
 import asyncio
+import time
 
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
@@ -80,12 +81,17 @@ async def get_commodity(category, url):
                 #print('Title: {}, Price: {}, Url: {}'.format(title, price, commodity_url))
                 _category = Category.objects.filter(name=category, status='0')
 
-                _category[0].commoditys.create(title=title,
-                                         price=price,
-                                         discount_type=discount_type,
-                                         url=commodity_url)
-
-
+                while True:
+                    try:
+                        _category[0].commoditys.create(
+                            title=title,
+                             price=price,
+                             discount_type=discount_type,
+                             url=commodity_url
+                        )
+                        break
+                    except:
+                        time.sleep(1)
 
 
 def crawl():
@@ -108,7 +114,5 @@ def crawl():
     Category.objects.filter(status='0').update(status='1')
 
 
-
 if __name__ == '__main__':
         crawl()
-
