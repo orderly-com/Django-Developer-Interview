@@ -22,6 +22,11 @@
 <script type="text/javascript">
     window.addEventListener("load", function () {
         $(".category-box, .nav-select").click(function() {
+            let load_num = 50;
+            let commodity_start = 0;
+            let category_id = $(this).attr("data-category_id");
+            let url = "/api/commodity/" + category_id + "?start=" + commodity_start + "&end=" + load_num;
+
             $("#category-box").hide();
             $("#commodity-box").empty();
 
@@ -30,13 +35,11 @@
                 $(".navbar").removeClass('show');
             }
 
-            let category_id = $(this).attr("data-category_id");
-            url = "/api/commodity/" + category_id;
-
             d3.text(url).then(function(datasetText) {
                 let rows  = d3.csvParseRows(datasetText),
                 table = d3.select("#commodity-box")
                         .append("table")
+                        . attr("id", "commodity-table")
                         .style("border-collapse", "collapse")
                         .style("border", "2px black solid")
                         .style("width", "100%");
@@ -54,9 +57,77 @@
                 .style("font-weight", "bold")
                 .style("text-transform", "uppercase");
 
-                table
-                .append("tbody")
-                .selectAll("tr")
+                if (rows.length > 1) {
+                    table
+                    .append("tbody")
+                    .selectAll("tr")
+                    .data(rows.slice(1))
+                    .enter().append("tr")
+                    .selectAll("td")
+                    .data(function(d){return d;})
+                    .enter().append("td")
+                    .style("border", "1px black solid")
+                    .style("padding", "5px")
+                    .on("mouseover", function(){
+                        d3.select(this).style("background-color", "darkgray");
+                    })
+                    .on("mouseout", function(){
+                        d3.select(this).style("background-color", "white");
+                    })
+                    .text(function(d){return d;})
+                    .style("font-size", "12px");
+                }
+            });
+                let load_status = true;
+                $(window).scroll(function() {
+                    let bottom_pos = $("#commodity-box").offset().top - $(document).scrollTop() + $("#commodity-box").height() - $(window).height();
+                    if (bottom_pos < $(window).height() && load_status == true) {
+                        load_status = false;
+                        commodity_start = commodity_start + 50;
+                        let url_ = "/api/commodity/" + category_id + "?start=" + commodity_start + "&end=" + (commodity_start + load_num);
+                        d3.text(url_).then(function(datasetText) {
+                            let rows  = d3.csvParseRows(datasetText)
+
+                            if (rows.length > 1) {
+                                d3.select("#commodity-table").selectAll("tbody").select("tr")
+                                .data(rows.slice(1))
+                                .enter().append("tr")
+                                .selectAll("td")
+                                .data(function(d){return d;})
+                                .enter().append("td")
+                                .style("border", "1px black solid")
+                                .style("padding", "5px")
+                                .on("mouseover", function(){
+                                d3.select(this).style("background-color", "darkgray");
+                                })
+                                .on("mouseout", function(){
+                                d3.select(this).style("background-color", "white");
+                                })
+                                .text(function(d){return d;})
+                                .style("font-size", "12px");
+                            }
+                        });
+                        $.data(this, 'scrollTimer', setTimeout(function() {
+                            load_status = true;
+                        },250));
+                    }
+                   
+                });
+            
+            
+            
+        });
+    });
+</script>
+<!--
+<script type="text/javascript">
+    $(window).scroll(function() {
+        url = "/api/commodity/" + category_id + "?start=0&end=100";
+        let bottom_pos = $("#commodity-box").offset().top - $(document).scrollTop() + $("#commodity-box").height() - $(window).height();
+        if (bottom_pos < $(window).height()) {
+            d3.text(url).then(function(datasetText) {
+                let rows  = d3.csvParseRows(datasetText)
+                d3.select("table").select("tbody").selectAll("tr")
                 .data(rows.slice(1))
                 .enter().append("tr")
                 .selectAll("td")
@@ -65,17 +136,19 @@
                 .style("border", "1px black solid")
                 .style("padding", "5px")
                 .on("mouseover", function(){
-                    d3.select(this).style("background-color", "darkgray");
+                d3.select(this).style("background-color", "darkgray");
                 })
                 .on("mouseout", function(){
-                    d3.select(this).style("background-color", "white");
+                d3.select(this).style("background-color", "white");
                 })
                 .text(function(d){return d;})
                 .style("font-size", "12px");
             });
-        });
+        }
+        console.log(bottom_pos);
     });
 </script>
+-->
 
 <div id="main-box">
     <div id="category-box">
