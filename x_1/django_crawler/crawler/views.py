@@ -50,19 +50,56 @@ def commodity_api_page(request, category_id):
 
 def category_quantity_api_page(request):
     response = dict()
+    response['data'] = list()
+
     category_list = Category.objects.filter(status=1)
 
-    data = response['data'] = list()
+    for category in category_list:
+        quantity_data = dict()
+        quantity_data['category_id'] = category.category_id
+        quantity_data['name'] = category.name
+        quantity_data['value'] = category.commoditys.all().count()
 
+        response['data'].append(quantity_data)
+
+    return JsonResponse(response)
+
+
+def category_price_api_page(request):
+    price_range = 500
+    column_list = list()
+
+    response = dict()
+    response['data'] = list()
+    response_range = response['range'] = list()
+
+    category_list = Category.objects.filter(status=1)
 
     for category in category_list:
-        category_data = dict()
-        category_data['category_id'] = category.category_id
-        category_data['name'] = category.name
-        category_data['value'] = category.commoditys.all().count()
+        price_data = dict()
+        price_data['name'] = category.name
+        price_data['category_id'] = category.category_id
 
-        data.append(category_data)
+        commodity_list =  category.commoditys.all()
 
+        for commodity in commodity_list:
+            price = int(commodity.price.replace(',', ''))
+
+            min_range = price - (price%price_range)
+            max_range = min_range + price_range - 1
+
+            _range = '{}-{}'.format(min_range, max_range)
+
+            if not _range in column_list:
+                column_list.append(_range)
+
+            if not _range in price_data:
+                price_data[_range] = 0
+            else:
+                price_data[_range] = price_data[_range] + 1
+        response['data'].append(price_data)
+
+    response['range'] = column_list
 
 
     return JsonResponse(response)

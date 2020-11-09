@@ -7,6 +7,12 @@
         display: flex;
         flex-flow: column;
     }
+    .bottom {
+        align-items: center;
+        justify-content: flex-end;
+        display: flex;
+        flex-flow: column;
+    }
     .category-box {
         width: 100%;
         height: 12.5vw;
@@ -16,6 +22,9 @@
         flex-direction: column;
         justify-content: center;
         background: rgba(0, 0, 0, 0.5);
+    }
+    .chart-box {
+        height: 90vh;
     }
 </style>
 
@@ -122,11 +131,23 @@
 </script>
 
 <script type="text/javascript">
-window.addEventListener("load", function () {
-    let url = "/api/category/quantity";
+    function random_color() {
+        let pwdChars = "0123456789ABCDEF";
+        let pwdLen = 6;
+        let randcolor  = "#" + Array(pwdLen).fill(pwdChars).map(function(x) { return x[Math.floor(Math.random() * x.length)] }).join('');
+        return randcolor
+    }
+    function random_color_list() {
+        return Array.from(Array(series.length)).map(x=>random_color())
+    }
+</script>
 
-    fetch(url,{
-        method: 'GET',
+<script type="text/javascript">
+    window.addEventListener("load", function () {
+        let url = "/api/category/price";
+
+        fetch(url,{
+            method: 'GET',
         }).then(function(response) {
            if (response.status >= 200 && response.status < 300) {
                return response.json()
@@ -136,68 +157,85 @@ window.addEventListener("load", function () {
                throw error
            }
         })
-        .then(function(data) {
-            data = data["data"]
-            color = "gray"
-            width = 500
-            height = 250
-            margin = ({top: 30, right: 0, bottom: 30, left: 40})
+        .then(function(json) {
+        price_range = json["range"]
+        data = json["data"]
 
-            x = d3.scaleBand()
-                .domain(d3.range(data.length))
-                .range([margin.left, width - margin.right])
-                .padding(0.1)
+        margin = ({top: 10, right: 10, bottom: 20, left: 40})
+        height = 500
+        width = 250
+        formatValue = x => isNaN(x) ? "N/A" : x.toLocaleString("en")
 
-            y = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.value)]).nice()
-                .range([height - margin.bottom, margin.top])
+        series = d3.stack()
+            .keys(price_range)
+            //.keys(data.columns.slice(1))
+            (data)
+            .map(d => (d.forEach(v => v.key = d.key), d))
 
-            xAxis = g => g
-                .attr("transform", `translate(0,${height - margin.bottom})`)
-                .call(d3.axisBottom(x).tickFormat(i => data[i].category_id).tickSizeOuter(0))
+        x = d3.scaleBand()
+            .domain(data.map(d => d.category_id))
+            .range([margin.left, width - margin.right])
+            .padding(0.1)
 
-            yAxis = g => g
-                .attr("transform", `translate(${margin.left},0)`)
-                .call(d3.axisLeft(y).ticks(null, data.format))
-                .call(g => g.select(".domain").remove())
-                .call(g => g.append("text")
-                    .attr("x", -margin.left)
-                    .attr("y", 10)
-                    .attr("fill", "currentColor")
-                    .attr("text-anchor", "start")
-                    .text(data.y))
+        y = d3.scaleLinear()
+            .domain([0, d3.max(series, d => d3.max(d, d => d[1]))])
+            .rangeRound([height - margin.bottom, margin.top])
 
-            svg = d3.select("#quantity-box").append("svg")
-            .attr("viewBox", [0, 0, width, height])
-            .style("width", "100%");
+        yAxis = g => g
+            .attr("transform", `translate(${margin.left},0)`)
+            .call(d3.axisLeft(y).ticks(null, "s"))
+            .call(g => g.selectAll(".domain").remove())
 
-            svg.append("g")
-                .attr("fill", color)
-            .selectAll("rect")
-                .data(data)
-                .join("rect")
-                .attr("data", (d, i) => d.name)
-                .attr("x", (d, i) => x(i))
-                .attr("y", d => y(d.value))
-                .attr("height", d => y(0) - y(d.value))
-                .attr("width", x.bandwidth())
-                .attr("data-toggle", "tooltip")
-                .attr("data-placement","bottom")
-                .attr("title",d => d.name)
-                .on("mouseover", function(){
-                    d3.select(this).style("fill", "lightgray");
-                }).on("mouseout", function(){
-                    d3.select(this).style("fill", "gray");
-                })
+        xAxis = g => g
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0))
+        .call(g => g.selectAll(".domain").remove())
+
+        color = d3.scaleOrdinal()
+        .domain(series.map(d => d.key))
+        .range(random_color_list())
+        .unknown("#ccc")
+
+        svg = d3.select("#price-box").append("svg")
+        .attr("viewBox", [0, 0, width, height]);
+
+        svg.append("g")
+        .selectAll("g")
+        .data(series)
+        .join("g")
+            .attr("fill", d => color(d.key))
+        .selectAll("rect")
+        .data(d => d)
+        .join("rect")
+            .attr("x", (d, i) => x(d.data.category_id))
+            .attr("y", d => y(d[1]))
+            .attr("data-toggle", "tooltip")
+            .attr("data-placement","bottom")
+            .attr("title",d => d.data.name+ " " + d.key +": " +d[1])
+            .attr("height", d => {
+                if (isNaN(d[1])){
+                    return 0
+                }else{
+                    return y(d[0]) - y(d[1])
+                }
+            })
+            .attr("width", x.bandwidth())
+        .append("title")
+            .text(d => `${d.data.category_id} ${d.key}
+
+        ${formatValue(d.data[d.key])}`)
+        .on("mouseover", function(){
             $(function () { $("[data-toggle='tooltip']").tooltip(); });
+        });
 
-            svg.append("g")
-                .attr("class", "x-axis")
-                .call(xAxis);
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
 
-            svg.append("g")
-                .attr("class", "y-axis")
-                .call(yAxis);
+        svg.append("g")
+            .call(xAxis);
+
+        svg.append("g")
+            .call(yAxis);
+
         }).catch(function(error) {
            return error.response.json();
         }).then(function(errorData){
@@ -205,10 +243,99 @@ window.addEventListener("load", function () {
     });
 </script>
 
+<script type="text/javascript">
+    window.addEventListener("load", function () {
+        let url = "/api/category/quantity";
+
+        fetch(url,{
+            method: 'GET',
+            }).then(function(response) {
+               if (response.status >= 200 && response.status < 300) {
+                   return response.json()
+               } else {
+                   var error = new Error(response.statusText)
+                   error.response = response
+                   throw error
+               }
+            })
+            .then(function(json) {
+                data = json["data"]
+                color = "gray"
+                width = 500
+                height = 250
+                margin = ({top: 30, right: 0, bottom: 30, left: 40})
+
+                x = d3.scaleBand()
+                    .domain(d3.range(data.length))
+                    .range([margin.left, width - margin.right])
+                    .padding(0.1)
+
+                y = d3.scaleLinear()
+                    .domain([0, d3.max(data, d => d.value)]).nice()
+                    .range([height - margin.bottom, margin.top])
+
+                xAxis = g => g
+                    .attr("transform", `translate(0,${height - margin.bottom})`)
+                    .call(d3.axisBottom(x).tickFormat(i => data[i].category_id).tickSizeOuter(0))
+
+                yAxis = g => g
+                    .attr("transform", `translate(${margin.left},0)`)
+                    .call(d3.axisLeft(y).ticks(null, data.format))
+                    .call(g => g.select(".domain").remove())
+                    .call(g => g.append("text")
+                        .attr("x", -margin.left)
+                        .attr("y", 10)
+                        .attr("fill", "currentColor")
+                        .attr("text-anchor", "start")
+                        .text(data.y))
+
+                svg = d3.select("#quantity-box").append("svg")
+                .attr("viewBox", [0, 0, width, height])
+                .style("width", "100%");
+
+                svg.append("g")
+                    .attr("fill", color)
+                .selectAll("rect")
+                    .data(data)
+                    .join("rect")
+                    .attr("data", (d, i) => d.name)
+                    .attr("x", (d, i) => x(i))
+                    .attr("y", d => y(d.value))
+                    .attr("height", d => y(0) - y(d.value))
+                    .attr("width", x.bandwidth())
+                    .attr("data-toggle", "tooltip")
+                    .attr("data-placement","bottom")
+                    .attr("title",d => d.name)
+                    .on("mouseover", function(){
+                        d3.select(this).style("fill", "lightgray");
+                        $(function () { $("[data-toggle='tooltip']").tooltip(); });
+                    }).on("mouseout", function(){
+                        d3.select(this).style("fill", "gray");
+                    })
+
+                svg.append("g")
+                    .attr("class", "x-axis")
+                    .call(xAxis);
+
+                svg.append("g")
+                    .attr("class", "y-axis")
+                    .call(yAxis);
+            }).catch(function(error) {
+               return error.response.json();
+            }).then(function(errorData){
+            });
+    });
+</script>
+
 <div id="main-box">
     <div id="chart-box">
-        <div id="quantity-box" class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-        <div class="center">數量統計</div>
+        <div class="row">
+            <div id="quantity-box" class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 bottom chart-box">
+                <div class="center">Quantity chart</div>
+            </div>
+            <div id="price-box" class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 bottom chart-box">
+                <div class="center">Price chart</div>
+            </div>
         </div>
     </div>
     <div id="category-box">

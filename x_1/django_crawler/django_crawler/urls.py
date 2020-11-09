@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_page, name='home'),
     path('api/commodity/<int:category_id>', views.commodity_api_page, name='commodity_api'),
-    path('api/category/quantity', views.category_quantity_api_page, name='category_quantity_api')
+    path('api/category/quantity', views.category_quantity_api_page, name='category_quantity_api'),
+    path('api/category/price', views.category_price_api_page, name='category_price_api')
 ]
