@@ -36,7 +36,7 @@ def commodity_api_page(request, category_id):
             commodity_list = []
         else:
             commodity_list = commodity_list[start:end]
- 
+
     for commodity in commodity_list:
         title = commodity['title']
         price = commodity['price']
@@ -46,3 +46,23 @@ def commodity_api_page(request, category_id):
         writer.writerow([title, price, discount_type, url])
 
     return response
+
+
+def category_quantity_api_page(request):
+    response = dict()
+    category_list = Category.objects.filter(status=1)
+
+    data = response['data'] = list()
+
+
+    for category in category_list:
+        category_data = dict()
+        category_data['category_id'] = category.category_id
+        category_data['name'] = category.name
+        category_data['value'] = category.commoditys.all().count()
+
+        data.append(category_data)
+
+
+
+    return JsonResponse(response)
