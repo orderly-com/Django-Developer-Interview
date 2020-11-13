@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from dateutil.relativedelta import relativedelta
 from fake_useragent import UserAgent
 
-from momoapp.models import LimitTimeSale
+from momoapp.models import LimitTimeSale, BankDiscount
 
 
 def datetime_format(dt, d_format, time_type=None):
@@ -116,15 +116,19 @@ def parse_bank_discount():
     begin_date = datetime_format(match.group(1), d_format="%m/%d").date()
     end_date = datetime_format(match.group(2), d_format="%m/%d").date()
 
-    bank_raw_data = re.findall(f'{begin_text}(.*?){end_text}', res.text, re.DOTALL)[0]
-    bank_raw_data = re.sub(r'//.*|\r|\n|\t|\u3000', '', bank_raw_data)
-    data = demjson.decode(f'{{{bank_raw_data}}}')
-    bank_discount_info = []
-    for bank in data.values():
-        bank_name = bank.get('name')
-        for info in bank.get('group'):
-            bank_discount_info.append(
-                {
+    last_item = BankDiscount.objects.last()
+    if begin_date <= last_item.begin_date:
+        pass
+
+    else:
+        bank_raw_data = re.findall(f'{begin_text}(.*?){end_text}', res.text, re.DOTALL)[0]
+        bank_raw_data = re.sub(r'//.*|\r|\n|\t|\u3000', '', bank_raw_data)
+        data = demjson.decode(f'{{{bank_raw_data}}}')
+        bank_discount_info_list = []
+        for bank in data.values():
+            bank_name = bank.get('name')
+            for info in bank.get('group'):
+                bank_data = {
                     'bank_name': bank_name,
                     'discount_date': info[1],
                     'condition': info[2],
@@ -132,4 +136,5 @@ def parse_bank_discount():
                     'begin_date': begin_date,
                     'end_date': end_date
                 }
-            )
+                bank_discount_info_list.append(BankDiscount(**bank_data))
+        BankDiscount.objects.bulk_create(bank_discount_info_list)

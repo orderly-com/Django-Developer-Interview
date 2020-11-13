@@ -16,3 +16,12 @@ class LimitTimeSale(models.Model):
 
     def __str__(self):
         return f'{self.brand} -- {self.title}'
+
+
+class BankDiscount(models.Model):
+    bank_name = models.CharField(max_length=100)
+    discount_date = models.CharField(max_length=100)
+    condition = models.CharField(max_length=100)
+    discount = models.CharField(max_length=100)
+    begin_date = models.DateField()
+    end_date = models.DateField()
