@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'momoapp',
     'rest_framework',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -123,4 +124,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+]
+
+
+# cron job
+CRONJOBS = [
+    ('0 0 * * *', 'momoapp.tasks.parse_limited_time_sale'),
 ]
