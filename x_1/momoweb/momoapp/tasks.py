@@ -1,7 +1,9 @@
 import json
+import re
 from datetime import datetime, date
 from re import sub
 
+import demjson
 import pytz
 import requests
 from bs4 import BeautifulSoup
@@ -11,8 +13,8 @@ from fake_useragent import UserAgent
 from momoapp.models import LimitTimeSale
 
 
-def datetime_format(dt, time_type=None):
-    dt = datetime.strptime(dt, "%m/%d %H:%M")
+def datetime_format(dt, d_format, time_type=None):
+    dt = datetime.strptime(dt, d_format)
     tw = pytz.timezone('Asia/Taipei')
     tw_dt_now = tw.localize(datetime.now())
     dt = dt.replace(year=tw_dt_now.year)
@@ -51,8 +53,8 @@ def parse_limited_time_sale():
     for sale in sale_block:
         limit_time = sale.find(class_='period').find('span').text
         begin_time, end_time = limit_time.split('~')
-        begin_time = datetime_format(begin_time)
-        end_time = datetime_format(end_time, time_type='end')
+        begin_time = datetime_format(begin_time, d_format="%m/%d %H:%M")
+        end_time = datetime_format(end_time, d_format="%m/%d %H:%M", time_type='end')
 
         last_item = LimitTimeSale.objects.last()
         if begin_time <= last_item.begin_time:
@@ -86,3 +88,48 @@ def parse_limited_time_sale():
             limit_time_sale_list.append(LimitTimeSale(**data))
 
     LimitTimeSale.objects.bulk_create(limit_time_sale_list)
+
+
+def parse_bank_discount():
+    url = 'https://www.momoshop.com.tw/edm/cmmedm.jsp?lpn=O0Y2mh4ttZH'
+    ua = UserAgent()
+    headers = {
+        'user-agent': ua.random
+    }
+    res = requests.get(url, headers=headers)
+    soup = BeautifulSoup(res.text, 'lxml')
+
+    bank_info_url = ''
+    for script in soup.find_all('script', {"src": True}):
+        if 'bankjs_list' in script.get('src'):
+            bank_info_url = 'https:' + script.get('src')
+            break
+    res = requests.get(bank_info_url, headers=headers)
+
+    begin_text = '<!-- -----------------------------------------------↓總覽↓入稿貼語法從這邊開始' \
+                 '----------------------------------------------- -->'
+    end_text = '<!-- -----------------------------------------------↑總覽↑入稿貼語法到這邊結束' \
+               '----------------------------------------------- -->'
+    date_row_data = re.findall(f"button:\t\'詳情 / 登錄\'(.*?){begin_text}", res.text, re.DOTALL)[0]
+    date_row_data = re.sub(r'\r|\n|\t|,', '', date_row_data)
+    match = re.search(r'(\d+/\d+)-(\d+/\d+)', date_row_data)
+    begin_date = datetime_format(match.group(1), d_format="%m/%d").date()
+    end_date = datetime_format(match.group(2), d_format="%m/%d").date()
+
+    bank_raw_data = re.findall(f'{begin_text}(.*?){end_text}', res.text, re.DOTALL)[0]
+    bank_raw_data = re.sub(r'//.*|\r|\n|\t|\u3000', '', bank_raw_data)
+    data = demjson.decode(f'{{{bank_raw_data}}}')
+    bank_discount_info = []
+    for bank in data.values():
+        bank_name = bank.get('name')
+        for info in bank.get('group'):
+            bank_discount_info.append(
+                {
+                    'bank_name': bank_name,
+                    'discount_date': info[1],
+                    'condition': info[2],
+                    'discount': info[3],
+                    'begin_date': begin_date,
+                    'end_date': end_date
+                }
+            )
