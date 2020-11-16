@@ -57,7 +57,7 @@ def parse_limited_time_sale():
         end_time = datetime_format(end_time, d_format="%m/%d %H:%M", time_type='end')
 
         last_item = LimitTimeSale.objects.last()
-        if begin_time <= last_item.begin_time:
+        if last_item and begin_time <= last_item.begin_time:
             continue
 
         product_list = sale.find('ul', class_='product_Area').find_all('li')
@@ -117,7 +117,7 @@ def parse_bank_discount():
     end_date = datetime_format(match.group(2), d_format="%m/%d").date()
 
     last_item = BankDiscount.objects.last()
-    if begin_date <= last_item.begin_date:
+    if last_item and begin_date <= last_item.begin_date:
         pass
 
     else:
