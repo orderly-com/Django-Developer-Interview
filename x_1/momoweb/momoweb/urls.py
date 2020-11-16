@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name="index.html")),
     path('api/duplicate-limit-time-sale/', views.DuplicateLimitTimeSaleAPIView.as_view()),
+    path('api/bank-date-filter/', views.BankDiscountFilter.as_view()),
+    path('api/bank-discount/', views.BankDiscountAPIView.as_view())
 ]
