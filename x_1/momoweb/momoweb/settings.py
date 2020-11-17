@@ -130,4 +130,5 @@ STATICFILES_DIRS = [
 # cron job
 CRONJOBS = [
     ('0 0 * * *', 'momoapp.tasks.parse_limited_time_sale'),
+    ('0 0 1 * *', 'momoapp.tasks.parse_bank_discount'),
 ]
